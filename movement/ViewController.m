@@ -106,6 +106,31 @@
     }
 }
 
+- (void)slowDown {
+    NSString *serialString = [NSString stringWithFormat:@"%d\n",0];
+    NSLog(@"serialString = %@",serialString);
+    [self.bean sendSerialString:serialString];
+}
+
+- (void)justRight {
+    NSString *serialString = [NSString stringWithFormat:@"%d\n",1];
+    NSLog(@"serialString = %@",serialString);
+    [self.bean sendSerialString:serialString];
+}
+
+- (void)speedUp {
+    NSString *serialString = [NSString stringWithFormat:@"%d\n",2];
+    NSLog(@"serialString = %@",serialString);
+    [self.bean sendSerialString:serialString];
+}
+
+- (void)off {
+    NSString *serialString = [NSString stringWithFormat:@"%d\n",3];
+    NSLog(@"serialString = %@",serialString);
+    [self.bean sendSerialString:serialString];
+}
+
+
 - (void)beanManagerDidUpdateState:(PTDBeanManager *)manager{
     if(self.beanManager.state == BeanManagerState_PoweredOn){
         [self.beanManager startScanningForBeans_error:nil];
