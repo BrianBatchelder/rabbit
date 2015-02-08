@@ -53,6 +53,23 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
     CLLocation* location = [locations lastObject];
     
+    if (!_firstLocation) {
+        _firstLocation = location;
+    }
+    
+    NSTimeInterval timeIntervalSinceFirstLocationUpdate = [location.timestamp timeIntervalSinceFirstLocationUpdateSinceDate:_firstLocation.timestamp];
+    if (timeIntervalSinceFirstLocationUpdate < 10) {
+        [self off];
+    } else if (timeIntervalSinceFirstLocationUpdate > 10 && timeIntervalSinceFirstLocationUpdate < 20) {
+        [self speedUp];
+    } else if (timeIntervalSinceFirstLocationUpdate > 20 && timeIntervalSinceFirstLocationUpdate < 30) {
+        [self justRight];
+    } else if (timeIntervalSinceFirstLocationUpdate > 30 && timeIntervalSinceFirstLocationUpdate < 40) {
+        [self slowDown];
+    } else if (timeIntervalSinceFirstLocationUpdate > 40 && timeIntervalSinceFirstLocationUpdate < 50) {
+        [self justRight];
+    }
+    
     NSLog(@"");
     if ([_previousLocations count] == 0) {
         [_previousLocations addObject:location];
