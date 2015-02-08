@@ -12,6 +12,10 @@
 
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) NSMutableArray *previousLocations;
+@property (nonatomic, strong) PTDBeanManager *beanManager;
+// all the beans returned from a scan
+@property (nonatomic, strong) NSMutableDictionary *beans;
+@property (nonatomic, strong) PTDBean *bean;
 @property (nonatomic, strong) CLLocation *firstLocation;
 @end
 
@@ -102,13 +106,64 @@
     }
 }
 
+- (void)beanManagerDidUpdateState:(PTDBeanManager *)manager{
+    if(self.beanManager.state == BeanManagerState_PoweredOn){
+        [self.beanManager startScanningForBeans_error:nil];
+    }
+    else if (self.beanManager.state == BeanManagerState_PoweredOff) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Turn on bluetooth to continue" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
+        [alert show];
+        return;
+    }
+}
+
+- (void)BeanManager:(PTDBeanManager*)beanManager didDiscoverBean:(PTDBean*)bean error:(NSError*)error{
+    self.bean = bean;
+    NSUUID * key = bean.identifier;
+    if (![self.beans objectForKey:key]) {
+        // New bean
+        NSLog(@"BeanManager:didDiscoverBean:error %@", bean);
+        [self.beans setObject:bean forKey:key];
+        
+        if (bean.state == BeanState_Discovered) {
+            bean.delegate = self;
+            [self.beanManager connectToBean:bean error:nil];
+        }
+
+    }
+}
+
+- (void)BeanManager:(PTDBeanManager*)beanManager didConnectToBean:(PTDBean*)bean error:(NSError*)error{
+    if (error) {
+        NSLog(@"%@", [error localizedDescription]);
+        return;
+    }
+    
+    [self.beanManager stopScanningForBeans_error:&error];
+    if (error) {
+        NSLog(@"%@", [error localizedDescription]);
+        return;
+    }
+    [self off];
+}
+
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     _pace.text = @"7:00";
     _previousLocations = [[NSMutableArray alloc] init];
     
+    self.beans = [NSMutableDictionary dictionary];
+    self.beanManager = [[PTDBeanManager alloc] initWithDelegate:self];
+    
     [self startStandardUpdates];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.beanManager.delegate = self;
 }
 
 - (void)didReceiveMemoryWarning {

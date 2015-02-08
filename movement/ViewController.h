@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
+#import <PTDBeanManager.h>
 
-@interface ViewController : UIViewController <CLLocationManagerDelegate>
+@interface ViewController : UIViewController <CLLocationManagerDelegate, PTDBeanManagerDelegate, PTDBeanDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *pace;
 
