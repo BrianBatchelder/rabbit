@@ -1,6 +1,6 @@
 //
 //  AppDelegate.h
-//  movement
+//  rabbit
 //
 //  Created by Brian Batchelder on 2/4/15.
 //  Copyright (c) 2015 Brian's Brain. All rights reserved.
