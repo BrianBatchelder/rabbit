@@ -57,7 +57,7 @@
         _firstLocation = location;
     }
     
-    NSTimeInterval timeIntervalSinceFirstLocationUpdate = [location.timestamp timeIntervalSinceFirstLocationUpdateSinceDate:_firstLocation.timestamp];
+    NSTimeInterval timeIntervalSinceFirstLocationUpdate = [location.timestamp timeIntervalSinceDate:_firstLocation.timestamp];
     if (timeIntervalSinceFirstLocationUpdate < 10) {
         [self off];
     } else if (timeIntervalSinceFirstLocationUpdate > 10 && timeIntervalSinceFirstLocationUpdate < 20) {
