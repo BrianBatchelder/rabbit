@@ -117,3 +117,5 @@ xcuserdata
 # is currently not enough information retained to reproduce the build without the Pods. 
 # http://guides.cocoapods.org/using/using-cocoapods.html#should-i-ignore-the-pods-directory-in-source-control
 #Pods/
+# commit Manifest.lock if you are also committing the Pods directory
+!Manifest.lock
