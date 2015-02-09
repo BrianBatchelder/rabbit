@@ -124,27 +124,35 @@
 }
 
 - (void)slowDown {
-    NSString *serialString = [NSString stringWithFormat:@"%d\n",0];
-    NSLog(@"serialString = %@",serialString);
-    [self.bean sendSerialString:serialString];
+    if (self.bean) {
+        NSString *serialString = [NSString stringWithFormat:@"%d\n",0];
+        NSLog(@"serialString = %@",serialString);
+        [self.bean sendSerialString:serialString];
+    }
 }
 
 - (void)justRight {
-    NSString *serialString = [NSString stringWithFormat:@"%d\n",1];
-    NSLog(@"serialString = %@",serialString);
-    [self.bean sendSerialString:serialString];
+    if (self.bean) {
+        NSString *serialString = [NSString stringWithFormat:@"%d\n",1];
+        NSLog(@"serialString = %@",serialString);
+        [self.bean sendSerialString:serialString];
+    }
 }
 
 - (void)speedUp {
-    NSString *serialString = [NSString stringWithFormat:@"%d\n",2];
-    NSLog(@"serialString = %@",serialString);
-    [self.bean sendSerialString:serialString];
+    if (self.bean) {
+        NSString *serialString = [NSString stringWithFormat:@"%d\n",2];
+        NSLog(@"serialString = %@",serialString);
+        [self.bean sendSerialString:serialString];
+    }
 }
 
 - (void)off {
-    NSString *serialString = [NSString stringWithFormat:@"%d\n",3];
-    NSLog(@"serialString = %@",serialString);
-    [self.bean sendSerialString:serialString];
+    if (self.bean) {
+        NSString *serialString = [NSString stringWithFormat:@"%d\n",3];
+        NSLog(@"serialString = %@",serialString);
+        [self.bean sendSerialString:serialString];
+    }
 }
 
 
@@ -198,6 +206,7 @@
     _previousLocations = [[NSMutableArray alloc] init];
     
     self.beans = [NSMutableDictionary dictionary];
+    self.bean = nil;
     self.beanManager = [[PTDBeanManager alloc] initWithDelegate:self];
     
     [self startStandardUpdates];
